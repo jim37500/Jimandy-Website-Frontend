@@ -1,4 +1,4 @@
-import TopBar from './components/Topbar.json';
+import TopBar from './components/TopBar.json';
 
 export default {
   ...TopBar,
