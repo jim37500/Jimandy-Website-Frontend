@@ -1,0 +1,50 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+Before diving into the best practices, please note that you may need to adapt the globs depending on your specific project structure.
+
+---
+name: vue3-best-practices.mdc
+description: Best practices for Vue 3 applications using Composition API
+globs: **/*.{ts,tsx,js,jsx}
+---
+
+- Use the Composition API for better code organization and reusability
+- Implement proper reactivity with `ref` and `reactive`
+- Use `provide/inject` for dependency injection
+- Leverage `script setup` syntax for concise component definitions
+
+---
+name: tailwindcss-best-practices.mdc
+description: Best practices for styling with Tailwind CSS
+globs: **/*.{ts,tsx,js,jsx,css}
+---
+
+- Use utility-first classes for rapid development
+- Create custom components with `@apply` directive
+- Implement responsive design using breakpoints
+- Optimize build size with `@tailwindcss/jit`
+
+---
+name: primevue4-best-practices.mdc
+description: Best practices for using PrimeVue 4 components
+globs: **/*.{ts,tsx,js,jsx}
+---
+
+- Use PrimeVue components for consistent UI across the application
+- Customize themes using PrimeVue's theming system
+- Implement proper accessibility features provided by PrimeVue
+- Optimize performance by lazy-loading components when possible
+
+---
+name: typescript-best-practices.mdc
+description: TypeScript coding standards and type safety guidelines
+globs: **/*.{ts,tsx}
+---
+
+- Use strict null checks to prevent null/undefined errors
+- Prefer interfaces over types for better extensibility
+- Implement type guards and assertions for runtime type checking
+- Use enums for a set of named constants
