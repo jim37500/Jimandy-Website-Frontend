@@ -1,5 +1,5 @@
 <template>
-  <div :key="reloadKey">
+  <div>
     <TopBar />
     <div class="pt-16">
       <router-view />
@@ -8,8 +8,5 @@
 </template>
 
 <script setup lang="ts">
-import { inject } from 'vue';
 import TopBar from '@/components/TopBar.vue';
-
-const reloadKey = inject('reloadKey', 0);
 </script>
