@@ -1,0 +1,13 @@
+{
+  "sweetAlert": {
+    "common": {
+      "confirm": "確認",
+      "cancel": "取消",
+      "loading": "載入中..."
+    },
+    "logout": {
+      "confirmMessage": "確定要登出嗎？",
+      "loggedOut": "已經登出"
+    }
+  }
+}

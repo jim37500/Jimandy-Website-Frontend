@@ -1,0 +1,15 @@
+{
+  "TopBar": {
+    "home": "ホーム",
+    "login": "ログイン",
+    "notLogin": "未ログイン",
+    "logout": "ログアウト",
+    "loggedIn": "ログイン中",
+    "myProjects": "マイプロジェクト",
+    "sportsRecords": "スポーツ記録",
+    "articleShare": "記事共有",
+    "sportsNotes": "スポーツノート",
+    "codingNotes": "コーディングノート",
+    "readingNotes": "読書ノート"
+  }
+}

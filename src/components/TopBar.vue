@@ -14,16 +14,17 @@
                   <div class="px-3 py-2 font-medium text-2xl cursor-pointer text-yellow-500" @click="navigateTo('/')">
                     JAGrowth
                   </div>
-                  <div
-                    :class="determineNavbarItemClass('/my-sports')"
-                    @click="navigateTo('/my-sports')"
-                  >
-                    {{ t('mySports') }}
-                  </div>
                   <DropdownMenu :items="articleMenuItems" triggerType="hover" alignment="left">
                     <template #trigger>
                       <div :class="determineNavbarItemClass('/article-share')">
-                        {{ t('articleShare') }}
+                        {{ t('TopBar.articleShare') }}
+                      </div>
+                    </template>
+                  </DropdownMenu>
+                  <DropdownMenu :items="projectMenuItems" triggerType="hover" alignment="left">
+                    <template #trigger>
+                      <div :class="determineNavbarItemClass('/projects')">
+                        {{ t('TopBar.myProjects') }}
                       </div>
                     </template>
                   </DropdownMenu>
@@ -100,49 +101,59 @@
           class="fixed left-0 right-0 top-16 bottom-0 z-20 bg-gray-800 bg-opacity-95 flex flex-col p-4"
         >
           <div class="flex flex-col gap-2">
-            <div
-              :class="determineNavbarItemClass('/')"
-              @click="handleMobileMenuClick(() => navigateTo('/'))"
-            >
-              {{ t('home') }}
+            <div :class="determineNavbarItemClass('/')" @click="handleMobileMenuClick(() => navigateTo('/'))">
+              {{ t('TopBar.home') }}
             </div>
             <div
-              :class="determineNavbarItemClass('/my-sports')"
-              @click="handleMobileMenuClick(() => navigateTo('/my-sports'))"
+              :class="determineNavbarItemClass('/projects')"
+              @click="handleMobileMenuClick(() => navigateTo('/projects'))"
             >
-              {{ t('mySports') }}
+              {{ t('TopBar.myProjects') }}
             </div>
             <div :class="determineNavbarItemClass('/article-share')">
-              {{ t('articleShare') }}
+              {{ t('TopBar.articleShare') }}
             </div>
             <div class="pl-4 flex flex-col gap-1 mb-4">
               <div
                 :class="determineNavbarItemClass('/sports-notes')"
                 @click="handleMobileMenuClick(() => navigateTo('/sports-notes'))"
               >
-                {{ t('sportsNotes') }}
+                {{ t('TopBar.sportsNotes') }}
               </div>
               <div
                 :class="determineNavbarItemClass('/coding-notes')"
                 @click="handleMobileMenuClick(() => navigateTo('/coding-notes'))"
               >
-                {{ t('codingNotes') }}
+                {{ t('TopBar.codingNotes') }}
               </div>
               <div
                 :class="determineNavbarItemClass('/reading-notes')"
                 @click="handleMobileMenuClick(() => navigateTo('/reading-notes'))"
               >
-                {{ t('readingNotes') }}
+                {{ t('TopBar.readingNotes') }}
               </div>
             </div>
             <div class="border-t border-gray-600 my-2"></div>
             <div class="flex items-center gap-3 px-3 py-2">
               <FontAwesomeIcon :icon="['far', 'user']" class="text-white text-2xl" />
-              <span class="text-gray-300">{{ t('notLogin') }}</span>
+              <span class="text-gray-300">{{ IsLogin ? t('TopBar.loggedIn') : t('TopBar.notLogin') }}</span>
             </div>
-            <div class="text-gray-300 px-3 py-2 text-lg cursor-pointer" @click="handleMobileMenuClick(login)">
-              {{ t('login') }}
-            </div>
+            <template v-if="IsLogin">
+              <div
+                class="text-gray-300 px-3 py-2 text-lg cursor-pointer"
+                @click="handleMobileMenuClick(() => logout())"
+              >
+                {{ t('TopBar.logout') }}
+              </div>
+            </template>
+            <template v-else>
+              <div
+                class="text-gray-300 px-3 py-2 text-lg cursor-pointer"
+                @click="handleMobileMenuClick(() => navigateTo('/login'))"
+              >
+                {{ t('TopBar.login') }}
+              </div>
+            </template>
           </div>
         </div>
       </transition>
@@ -151,35 +162,45 @@
 </template>
 
 <script setup lang="ts">
-import { ref, provide, computed } from 'vue';
+import { ref, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { useRouter } from 'vue-router';
+import { storeToRefs } from 'pinia';
 import { updateLocale } from '@/locale/utils';
 import DropdownMenu from './DropdownMenu.vue';
-import { useRouter } from 'vue-router';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { useAuthStore } from '@/stores/auth';
+import { showAlert, showConfirm } from '@/utils/sweetAlert';
+import { logoutApi } from '@/service/apis/auth';
 
 const { t } = useI18n();
 const router = useRouter();
+const authStore = useAuthStore();
+const { IsLogin } = storeToRefs(authStore);
 
 const isMobileMenuOpen = ref(false);
 
-// 提供一個重新渲染的觸發器
-const reloadKey = ref(0);
-provide('reloadKey', reloadKey);
+const projectMenuItems = computed(() => [
+  {
+    label: t('TopBar.sportsRecords'),
+    icon: 'pi pi-book',
+    command: () => navigateTo('/projects'),
+  },
+]);
 
 const articleMenuItems = computed(() => [
   {
-    label: t('sportsNotes'),
+    label: t('TopBar.sportsNotes'),
     icon: 'pi pi-book',
     command: () => navigateTo('/sports-notes'),
   },
   {
-    label: t('codingNotes'),
+    label: t('TopBar.codingNotes'),
     icon: 'pi pi-code',
     command: () => navigateTo('/coding-notes'),
   },
   {
-    label: t('readingNotes'),
+    label: t('TopBar.readingNotes'),
     icon: 'pi pi-bookmark',
     command: () => navigateTo('/reading-notes'),
   },
@@ -196,25 +217,33 @@ const languageMenuItems = ref([
   },
   {
     label: '日本語',
-    command: () => setLanguage('jp'),
+    command: () => setLanguage('ja'),
   },
 ]);
 
-const userMenuItems = computed(() => [
-  {
-    label: t('login'),
-    icon: 'pi pi-sign-in',
-    command: () => login(),
-  },
-]);
+const userMenuItems = computed(() => determineUserMenuItems());
+
+const determineUserMenuItems = () => {
+  if (IsLogin.value) {
+    return [
+      {
+        label: t('TopBar.logout'),
+        icon: 'pi pi-sign-out',
+        command: () => logout(),
+      },
+    ];
+  }
+  return [
+    {
+      label: t('TopBar.login'),
+      icon: 'pi pi-sign-in',
+      command: () => navigateTo('/login'),
+    },
+  ];
+};
 
 const setLanguage = (language: string) => {
   updateLocale(language);
-  reloadKey.value += 1;
-};
-
-const login = () => {
-  console.log('login');
 };
 
 const navigateTo = (path: string) => {
@@ -240,6 +269,19 @@ const determineNavbarItemClass = (path: string) => {
 const handleMobileMenuClick = (fn: () => void) => {
   isMobileMenuOpen.value = false;
   setTimeout(fn, 200); // 等動畫結束再執行
+};
+
+const logout = () => {
+  showConfirm(t('sweetAlert.logout.confirmMessage')).then((result) => {
+    if (result.isConfirmed) {
+      logoutApi().finally(() => {
+        authStore.removeToken();
+        authStore.IsLogin = false;
+        navigateTo('/');
+        showAlert(t('sweetAlert.logout.loggedOut'));
+      });
+    }
+  });
 };
 </script>
 

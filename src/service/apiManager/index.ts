@@ -1,7 +1,6 @@
+import { refreshAccessTokenApi } from '../apis/auth';
 import { handleBaseApi } from './apiBase';
-// import { verifyRefreshTokenApi } from '../apis/auth';
-import type { ApiOptions, ApiMethod, ApiHandleSuccessResult } from './types';
-// import type { CustomAxiosError } from './types';
+import type { ApiOptions, ApiMethod, ApiHandleSuccessResult, CustomAxiosError } from './types';
 
 const backApiUrl = import.meta.env.VITE_BACK_API_URL;
 
@@ -82,17 +81,17 @@ export async function handleAccessTokenApi<ApiResType>(
     return await handleBaseApi(apiDomain, method, path, apiOptions, getAccessTokenHeader);
   } catch (error) {
     // 如果是 401 錯誤，嘗試刷新 token 後重試
-    // if ((error as CustomAxiosError).response?.status === 401) {
-    //   const { res } = await verifyRefreshTokenApi();
+    if ((error as CustomAxiosError).response?.status === 401) {
+      const { res } = await refreshAccessTokenApi();
 
-    //   // 設置新的 access token
-    //   const tomorrow = new Date();
-    //   tomorrow.setDate(tomorrow.getDate() + 7);
-    //   document.cookie = `accessToken=${res.access_token}; expires=${tomorrow.toUTCString()}; path=/`;
+      // 設置新的 access token
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 7);
+      document.cookie = `accessToken=${res.accessToken}; expires=${tomorrow.toUTCString()}; path=/`;
 
-    //   // 使用新的 access token 重試原始請求
-    //   return handleAccessTokenApi(apiDomain, method, path, apiOptions);
-    // }
+      // 使用新的 access token 重試原始請求
+      return handleAccessTokenApi(apiDomain, method, path, apiOptions);
+    }
     throw error;
   }
 }

@@ -1,12 +1,15 @@
 {
-  "home": "首頁",
-  "login": "登入",
-  "notLogin": "未登入",
-  "logout": "登出",
-  "mySports": "我的運動",
-  "articleShare": "文章分享",
-  "sportsNotes": "運動筆記",
-  "codingNotes": "程式筆記",
-  "readingNotes": "閱讀筆記"
+  "TopBar": {
+    "home": "首頁",
+    "login": "登入",
+    "notLogin": "未登入",
+    "loggedIn": "已登入",
+    "logout": "登出",
+    "myProjects": "我的專案",
+    "sportsRecords": "運動紀錄",
+    "articleShare": "文章分享",
+    "sportsNotes": "運動筆記",
+    "codingNotes": "程式筆記",
+    "readingNotes": "閱讀筆記"
+  }
 }
-  

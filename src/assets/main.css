@@ -1,2 +1,6 @@
 @import 'tailwindcss';
 @import './base.css';
+
+.swal2-container {
+  z-index: 99999999;
+}

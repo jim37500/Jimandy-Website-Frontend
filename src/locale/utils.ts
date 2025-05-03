@@ -3,8 +3,8 @@ import { i18n } from './index';
 export function getSystemLanguage() {
   if (navigator.language.startsWith('zh')) {
     return 'zh-Hant-TW';
-  } else if (navigator.language.startsWith('jp')) {
-    return 'jp';
+  } else if (navigator.language.startsWith('ja')) {
+    return 'ja';
   } else {
     return 'en';
   }

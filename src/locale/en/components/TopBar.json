@@ -1,11 +1,15 @@
 {
-  "home": "Home",
-  "login": "Login",
-  "notLogin": "Not Login",
-  "logout": "Logout",
-  "mySports": "My Sports",
-  "articleShare": "Article Share",
-  "sportsNotes": "Sport Notes",
-  "codingNotes": "Coding Notes",
-  "readingNotes": "Reading Notes"
+  "TopBar": {
+    "home": "Home",
+    "login": "Login",
+    "notLogin": "Not Login",
+    "loggedIn": "Logged in",
+    "logout": "Logout",
+    "myProjects": "My Projects",
+    "sportsRecords": "Sports Records",
+    "articleShare": "Article Share",
+    "sportsNotes": "Sport Notes",
+    "codingNotes": "Coding Notes",
+    "readingNotes": "Reading Notes"
+  }
 }

@@ -1,0 +1,13 @@
+{
+  "sweetAlert": {
+    "common": {
+      "confirm": "Confirm",
+      "cancel": "Cancel",
+      "loading": "Loading..."
+    },
+    "logout": {
+      "confirmMessage": "Are you sure you want to logout?",
+      "loggedOut": "Already logged out"
+    }
+  }
+}

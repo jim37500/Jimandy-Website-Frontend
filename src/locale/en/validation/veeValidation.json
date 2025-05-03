@@ -1,0 +1,6 @@
+{
+    "veeValidate": {
+        "required": "This is a required field",
+        "email": "Please enter a valid email address"
+    }
+}
